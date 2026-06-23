@@ -1,94 +1,170 @@
 /* 苏麻离青 · 交互脚本 */
 (function () {
   'use strict';
+  var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
-  /* ---- 移动端菜单 ---- */
-  var toggle = document.getElementById('navToggle');
-  var links = document.getElementById('navLinks');
-  if (toggle && links) {
-    toggle.addEventListener('click', function () { links.classList.toggle('show'); });
-    links.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') links.classList.remove('show');
+  /* ---------- 自定义光标 ---------- */
+  if (fine) {
+    var dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
+    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+    });
+    (function loop() {
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+      requestAnimationFrame(loop);
+    })();
+    var hotSel = '[data-hot],a,button,.idx-row,.zone .pic,.glass.tilt';
+    document.addEventListener('mouseover', function (e) {
+      if (e.target.closest(hotSel)) ring.classList.add('hot');
+    });
+    document.addEventListener('mouseout', function (e) {
+      if (e.target.closest(hotSel)) ring.classList.remove('hot');
     });
   }
 
-  /* ---- 滚动渐显 ---- */
+  /* ---------- 导航：滚动加底 + 当前区块 ---------- */
+  var nav = document.getElementById('nav');
+  var navAnchors = [].slice.call(document.querySelectorAll('.nav-links a'));
+  var secMap = navAnchors.map(function (a) {
+    return { a: a, s: document.getElementById(a.getAttribute('href').slice(1)) };
+  }).filter(function (o) { return o.s; });
+  function onScroll() {
+    nav.classList.toggle('solid', scrollY > 60);
+    var y = scrollY + 130, cur = null;
+    secMap.forEach(function (o) { if (o.s.offsetTop <= y) cur = o; });
+    navAnchors.forEach(function (a) { a.classList.remove('active'); });
+    if (cur) cur.a.classList.add('active');
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  var toggle = document.getElementById('navToggle'), links = document.getElementById('navLinks');
+  toggle && toggle.addEventListener('click', function () { links.classList.toggle('open'); });
+  links && links.addEventListener('click', function (e) { if (e.target.closest('a')) links.classList.remove('open'); });
+
+  /* ---------- 滚动渐显 ---------- */
   var reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-      });
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     reveals.forEach(function (el) { io.observe(el); });
-  } else {
-    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else { reveals.forEach(function (el) { el.classList.add('in'); }); }
+
+  /* ---------- Hero 视差 ---------- */
+  var heroImg = document.getElementById('heroImg');
+  if (fine && heroImg) {
+    var hero = heroImg.closest('.hero');
+    hero.addEventListener('mousemove', function (e) {
+      var r = hero.getBoundingClientRect();
+      var dx = (e.clientX / r.width - 0.5), dy = (e.clientY / r.height - 0.5);
+      heroImg.style.transform = 'scale(1.08) translate(' + (-dx * 18) + 'px,' + (-dy * 18) + 'px)';
+    });
+    hero.addEventListener('mouseleave', function () { heroImg.style.transform = 'scale(1.08)'; });
   }
 
-  /* ---- 灯箱 ---- */
-  var lb = document.getElementById('lightbox');
-  var lbImg = document.getElementById('lbImg');
-  var lbCap = document.getElementById('lbCap');
-  var items = [];   // {src, cap}
-  var idx = 0;
-
-  function collect() {
-    items = [];
-    document.querySelectorAll('[data-src]').forEach(function (el) {
-      var cap = '';
-      var fc = el.querySelector('figcaption');
-      if (fc) cap = fc.textContent.trim();
-      else if (el.getAttribute('alt')) cap = el.getAttribute('alt');
-      var img = el.querySelector('img');
-      if (img && img.alt && !cap) cap = img.alt;
-      items.push({ src: el.getAttribute('data-src'), cap: cap, el: el });
+  /* ---------- 液态玻璃：3D 倾斜 + 高光跟随 ---------- */
+  if (fine) {
+    document.querySelectorAll('.glass.tilt').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+        card.style.transform = 'perspective(900px) rotateX(' + ((0.5 - py) * 7).toFixed(2) +
+          'deg) rotateY(' + ((px - 0.5) * 7).toFixed(2) + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('mouseleave', function () { card.style.transform = ''; });
     });
   }
-  collect();
 
-  function show(i) {
-    if (!items.length) return;
-    idx = (i + items.length) % items.length;
-    lbImg.src = items[idx].src;
-    lbCap.textContent = items[idx].cap || '';
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
+  /* ---------- 翻页书 ---------- */
+  var book = document.getElementById('book');
+  if (book) {
+    var TOTAL = 12, leaves = [], cur = 0;
+    for (var i = 1; i <= TOTAL; i++) {
+      var src = 'assets/cmf/slide-' + (i < 10 ? '0' + i : i) + '.jpg';
+      var leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      leaf.innerHTML =
+        '<div class="face front"><img src="' + src + '" alt="图册第' + i + '页"></div>' +
+        '<div class="face back"><span class="bk">' + (i < 10 ? '0' + i : i) + '</span></div>' +
+        '<div class="shade"></div>';
+      leaf.dataset.src = src; leaf.dataset.i = i;
+      book.appendChild(leaf); leaves.push(leaf);
+    }
+    var curEl = document.getElementById('flipCur'), totEl = document.getElementById('flipTot');
+    var prevBtn = document.getElementById('flipPrev'), nextBtn = document.getElementById('flipNext');
+    totEl.textContent = TOTAL;
+
+    function render() {
+      leaves.forEach(function (lf, idx) {
+        var turned = idx < cur;
+        lf.classList.toggle('turned', turned);
+        lf.style.zIndex = turned ? idx : (TOTAL - idx);
+      });
+      curEl.textContent = (cur + 1 < 10 ? '0' : '') + (cur + 1);
+      prevBtn.disabled = cur === 0; nextBtn.disabled = cur === TOTAL - 1;
+    }
+    function flash(idx) {
+      var lf = leaves[idx]; if (!lf) return;
+      lf.classList.add('flipping');
+      setTimeout(function () { lf.classList.remove('flipping'); }, 1000);
+    }
+    function next() { if (cur < TOTAL - 1) { flash(cur); cur++; render(); } }
+    function prev() { if (cur > 0) { cur--; flash(cur); render(); } }
+    render();
+
+    nextBtn.addEventListener('click', next);
+    prevBtn.addEventListener('click', prev);
+
+    /* 点击左右半页 / 拖动翻页 */
+    var stage = document.getElementById('bookStage');
+    var downX = null, downY = null, downT = 0, moved = false;
+    stage.addEventListener('pointerdown', function (e) {
+      downX = e.clientX; downY = e.clientY; downT = Date.now(); moved = false;
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (downX !== null && Math.abs(e.clientX - downX) > 8) moved = true;
+    });
+    stage.addEventListener('pointerup', function (e) {
+      if (downX === null) return;
+      var dx = e.clientX - downX, dt = Date.now() - downT;
+      if (moved && Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+      else if (!moved && dt < 300) {
+        var r = stage.getBoundingClientRect();
+        (e.clientX - r.left) > r.width / 2 ? next() : prev();
+      }
+      downX = downY = null;
+    });
+    /* 双击放大当前页 */
+    stage.addEventListener('dblclick', function () { openLB(leaves[cur].dataset.src, '图册第 ' + (cur + 1) + ' 页'); });
+
+    /* 键盘 */
+    addEventListener('keydown', function (e) {
+      if (lb.classList.contains('open')) return;
+      var rect = stage.getBoundingClientRect();
+      if (rect.top < innerHeight && rect.bottom > 0) {
+        if (e.key === 'ArrowRight') next();
+        else if (e.key === 'ArrowLeft') prev();
+      }
+    });
   }
-  function close() { lb.classList.remove('open'); document.body.style.overflow = ''; }
 
+  /* ---------- Lightbox ---------- */
+  var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
+  function openLB(src, cap) { lbImg.src = src; lbCap.textContent = cap || ''; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLB() { lb.classList.remove('open'); document.body.style.overflow = ''; }
   document.querySelectorAll('[data-src]').forEach(function (el) {
     el.addEventListener('click', function () {
-      var here = items.findIndex(function (it) { return it.el === el; });
-      show(here < 0 ? 0 : here);
+      var cap = ''; var img = el.querySelector('img');
+      if (img) cap = img.alt;
+      openLB(el.getAttribute('data-src'), cap);
     });
   });
-
-  document.getElementById('lbClose').addEventListener('click', close);
-  document.getElementById('lbPrev').addEventListener('click', function (e) { e.stopPropagation(); show(idx - 1); });
-  document.getElementById('lbNext').addEventListener('click', function (e) { e.stopPropagation(); show(idx + 1); });
-  lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
-  document.addEventListener('keydown', function (e) {
-    if (!lb.classList.contains('open')) return;
-    if (e.key === 'Escape') close();
-    else if (e.key === 'ArrowLeft') show(idx - 1);
-    else if (e.key === 'ArrowRight') show(idx + 1);
-  });
-
-  /* ---- 导航高亮当前区块 ---- */
-  var navAnchors = document.querySelectorAll('.nav-links a');
-  var secs = [];
-  navAnchors.forEach(function (a) {
-    var id = a.getAttribute('href').slice(1);
-    var s = document.getElementById(id);
-    if (s) secs.push({ a: a, s: s });
-  });
-  function onScroll() {
-    var y = window.scrollY + 120;
-    var cur = null;
-    secs.forEach(function (o) { if (o.s.offsetTop <= y) cur = o; });
-    navAnchors.forEach(function (a) { a.style.color = ''; });
-    if (cur) cur.a.style.color = 'var(--qing)';
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  document.getElementById('lbClose').addEventListener('click', function (e) { e.stopPropagation(); closeLB(); });
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target === lbImg) closeLB(); });
+  addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLB(); });
 })();
