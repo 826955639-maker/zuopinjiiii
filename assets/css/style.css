@@ -271,6 +271,39 @@ footer{background:var(--bg-3);padding:96px 0 44px;border-top:1px solid var(--lin
 .lb .x{position:absolute;top:24px;right:32px;font-size:34px;color:var(--cream)}
 .lb .cap{position:absolute;bottom:24px;left:0;right:0;text-align:center;font-family:var(--display);font-style:italic;color:var(--cream-soft);font-size:14px}
 
+/* ---------- Hero 封面文字 ---------- */
+.hero-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg,rgba(240,234,221,0) 30%,rgba(240,234,221,.5) 54%,rgba(240,234,221,.9) 80%)}
+.hero-content{position:absolute;inset:0;z-index:3;display:flex;justify-content:flex-end;align-items:stretch}
+.cover-text{width:min(52%,600px);display:flex;flex-direction:column;padding:16vh 0 12vh;color:var(--ink)}
+.cover-star{color:var(--red);font-size:20px;margin-bottom:14px}
+.cover-title{font-family:var(--serif);font-weight:900;font-size:clamp(50px,7.2vw,94px);color:var(--red);letter-spacing:.12em;line-height:1}
+.cover-course{font-family:var(--serif);font-weight:700;font-size:clamp(21px,3vw,34px);color:var(--ink);letter-spacing:.16em;margin-top:16px}
+.cover-en{font-family:var(--display);font-style:italic;font-size:15px;color:#9a7a37;margin-top:12px;letter-spacing:.03em}
+.cover-bottom{margin-top:auto}
+.cover-credit{font-size:14px;color:var(--ink-soft);line-height:2.1;letter-spacing:.03em}
+.cover-credit .ck{display:inline-block;min-width:64px;color:var(--red);font-family:var(--serif);margin-right:6px}
+.cover-studio{font-family:var(--display);font-style:italic;font-size:23px;color:var(--ink);margin-top:16px}
+
+/* ---------- 扉页 spread + overview ---------- */
+.spread{display:grid;grid-template-columns:.82fr 1.18fr;background:var(--ivory);color:var(--ink);
+  border-radius:6px;overflow:hidden;box-shadow:0 40px 90px -50px #000;margin-bottom:34px}
+.spread-img{position:relative;min-height:430px;overflow:hidden;cursor:zoom-in}
+.spread-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.spread:hover .spread-img img{transform:scale(1.05)}
+.spread-body{padding:clamp(36px,5vw,72px);display:flex;flex-direction:column;justify-content:center}
+.q-mark{font-family:var(--serif);font-size:56px;color:var(--red);line-height:.4;margin-bottom:18px}
+.q-text{font-family:var(--serif);font-weight:400;font-size:clamp(16px,1.75vw,20px);line-height:2.25;color:var(--ink);margin-bottom:16px;letter-spacing:.03em}
+.q-text b{color:var(--red);font-weight:700}
+.overview{position:relative;border-radius:18px;overflow:hidden;min-height:430px;display:flex;align-items:center;justify-content:flex-end;padding:46px;box-shadow:0 40px 90px -50px #000}
+.overview-bg{position:absolute;inset:0;z-index:0}
+.overview-bg img{width:100%;height:100%;object-fit:cover}
+.overview-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(16,17,20,.55),transparent 58%)}
+.overview-card{position:relative;z-index:2;max-width:520px;padding:38px 40px}
+.overview-card .tag{font-family:var(--display);font-style:italic;color:var(--gold);font-size:15px;margin-bottom:14px}
+.overview-card p{color:rgba(233,227,212,.92);font-size:15px;line-height:2.05;font-weight:300}
+.overview-card p b{color:#fff;font-weight:500}
+
 /* reveal */
 .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
@@ -278,7 +311,12 @@ footer{background:var(--bg-3);padding:96px 0 44px;border-top:1px solid var(--lin
 
 /* responsive */
 @media(max-width:920px){
-  .preface .sheet,.ph-grid{grid-template-columns:1fr;gap:34px}
+  .spread{grid-template-columns:1fr}
+  .spread-img{min-height:280px}
+  .overview{justify-content:center;padding:30px}
+  .hero-veil{background:linear-gradient(180deg,rgba(240,234,221,.15),rgba(240,234,221,.55) 60%,rgba(240,234,221,.92))}
+  .cover-text{width:100%;padding:14vh 0 9vh;align-items:flex-start}
+  .ph-grid{grid-template-columns:1fr;gap:34px}
   .zone,.zone:nth-child(even){grid-template-columns:1fr;direction:ltr}
   .mat-grid{grid-template-columns:1fr 1fr}
   .idx-row{grid-template-columns:60px 1fr;gap:14px}

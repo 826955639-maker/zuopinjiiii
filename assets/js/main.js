@@ -85,7 +85,7 @@
   if (book) {
     var TOTAL = 12, leaves = [], cur = 0;
     for (var i = 1; i <= TOTAL; i++) {
-      var src = 'assets/cmf/slide-' + (i < 10 ? '0' + i : i) + '.jpg';
+      var src = (window.__SLIDES__ && window.__SLIDES__[i - 1]) || ('assets/cmf/slide-' + (i < 10 ? '0' + i : i) + '.jpg');
       var leaf = document.createElement('div');
       leaf.className = 'leaf';
       leaf.innerHTML =
