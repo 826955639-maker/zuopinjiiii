@@ -106,8 +106,8 @@
       </a>
       <a class="idx-row" href="#hmi" data-hot>
         <span class="no">02</span>
-        <div><h3>汽车人机界面研究</h3><div class="en">Human-Machine Interface</div></div>
-        <span class="wk">Week 12</span><span class="st wait">○ 待补充</span>
+        <div><h3>数字座舱人机界面设计</h3><div class="en">Human-Machine Interface</div></div>
+        <span class="wk">Week 12</span><span class="st done">● 内容已就绪</span>
       </a>
       <a class="idx-row" href="#struct" data-hot>
         <span class="no">03</span>
@@ -220,8 +220,8 @@
     <div class="sec-head reveal" style="margin-bottom:48px">
       <div class="kicker"><span class="star">✳</span> 整体图册 · The Album</div>
       <h2 class="h-en">Flip <em>Through</em></h2>
-      <div class="h-cn">翻阅整本图册 · 单页翻书</div>
-      <p class="sec-lead">如翻动一本实体图册——点击右半页或按 → 翻到下一页，左半页或 ← 返回，亦可拖动书页。</p>
+      <div class="h-cn">翻阅整本图册 · CMF + HMI</div>
+      <p class="sec-lead">如翻动一本实体图册——点击右半页或按 → 翻到下一页，左半页或 ← 返回，亦可拖动书页。CMF 与 HMI 全部图版汇于一册。</p>
     </div>
 
     <div class="flip-wrap reveal">
@@ -230,7 +230,7 @@
       </div>
       <div class="flip-ctrl">
         <button class="glass" id="flipPrev" data-hot aria-label="上一页">‹</button>
-        <div class="flip-counter"><b id="flipCur">01</b> / <span id="flipTot">12</span></div>
+        <div class="flip-counter"><b id="flipCur">01</b> / <span id="flipTot">21</span></div>
         <button class="glass" id="flipNext" data-hot aria-label="下一页">›</button>
       </div>
       <div class="flip-hint" id="flipHint">点击右半页 → 下一页 · 点击左半页 → 上一页 · 可拖动</div>
@@ -240,26 +240,102 @@
 
 <!-- ============ 人机界面 ============ -->
 <section class="band-dark" id="hmi">
-  <div class="orbs"><span class="orb b"></span></div>
+  <div class="orbs"><span class="orb a"></span><span class="orb b"></span></div>
   <div class="vlabel">HMI</div>
   <div class="wrap">
     <div class="sec-head reveal">
       <div class="kicker"><span class="star">✳</span> 单元二 · HMI</div>
-      <h2 class="h-en">Interface <em>Study</em></h2>
-      <div class="h-cn">汽车人机界面研究与优化设计</div>
-      <p class="sec-lead">调研汽车人机界面（软硬件）的设计技术与趋势，拆解设计要素，针对主题完成界面优化设计。</p>
+      <h2 class="h-en">Interface <em>Design</em></h2>
+      <div class="h-cn">数字座舱人机界面设计</div>
+      <p class="sec-lead">以青蓝雾化沙丘与暖金晨光为视觉基底，玻璃拟态、低饱和蓝灰与暖金光影贯穿仪表、中控与各功能页面，构建统一的未来东方座舱交互语言。</p>
     </div>
-    <div class="glass ph tilt reveal">
-      <div class="ph-grid">
-        <ul class="ph-list">
-          <li><span class="pn">1</span><div><b>人机界面调研综述</b><small>调研范围、调研车型 / 产品、设计技术梳理</small></div></li>
-          <li><span class="pn">2</span><div><b>设计要素拆解</b><small>尺寸规范、交互逻辑、视觉层级、人机工程要点、色彩与图标规范</small></div></li>
-          <li><span class="pn">3</span><div><b>设计过程及成果</b><small>界面效果图、多页面交互流程图、图标 / 配色规范表</small></div></li>
-        </ul>
-        <div class="ph-note glass">
-          <span class="badge">占位区块 · 待填充</span>
-          <p>把人机界面的调研报告与设计方案（图片 / PDF）发给我，我会按上方结构填入效果图、交互流程图与规范表，并与 CMF 单元保持一致的「苏麻离青」视觉风格。</p>
+
+    <!-- 设计主题：玻璃压图 -->
+    <div class="topic reveal">
+      <div class="topic-bg"><img src="assets/hmi/screen-03.jpg" alt="数字中控开机界面"></div>
+      <div class="glass tilt">
+        <div class="tag">数字中控 · Digital Cockpit</div>
+        <h3>沙丘晨光 · 未来东方座舱</h3>
+        <p>开机界面以青蓝雾化沙丘与暖金晨光构成沉浸式背景，营造静谧、高级且具未来东方美学气质的 HMI 氛围，为整套座舱交互定下基调。</p>
+      </div>
+    </div>
+
+    <!-- 仪表模式 -->
+    <div class="sub-head reveal">
+      <div class="l">Cluster <span class="star">✳</span> Modes</div>
+      <div class="r">全液晶仪表 · 双模式</div>
+    </div>
+    <div class="hmi-modes">
+      <div class="glass mode tilt reveal">
+        <div class="shot" data-src="assets/hmi/screen-01.jpg" data-hot><img src="assets/hmi/screen-01.jpg" alt="常规模式"></div>
+        <div class="cap"><h4>常规模式</h4><span>Standard Mode</span></div>
+      </div>
+      <div class="glass mode tilt reveal d1">
+        <div class="shot" data-src="assets/hmi/screen-02.jpg" data-hot><img src="assets/hmi/screen-02.jpg" alt="运动模式"></div>
+        <div class="cap"><h4>运动模式</h4><span>Sports Mode</span></div>
+      </div>
+    </div>
+
+    <!-- 功能页面 zones -->
+    <div class="sub-head reveal">
+      <div class="l">Screens <span class="star">✳</span> &amp; Flow</div>
+      <div class="r">中控 · 音乐 · 空调 · 座椅 · 设置</div>
+    </div>
+    <div class="zones">
+      <div class="zone reveal">
+        <div class="pic" data-src="assets/hmi/screen-04.jpg" data-hot><img src="assets/hmi/screen-04.jpg" alt="中控首页"></div>
+        <div class="body">
+          <div class="n">Screen 01</div><h4>中控首页</h4><div class="en">Central Control Home</div>
+          <p>以 3D 沉浸式导航场景作为视觉核心，将速度、电量、续航、音乐、路线信息与底部功能入口整合于同一界面，形成聚合式首页。</p>
+          <div class="chips"><span>3D 导航</span><span>聚合首页</span><span>信息整合</span><span>快捷入口</span></div>
         </div>
+      </div>
+      <div class="zone reveal">
+        <div class="pic" data-src="assets/hmi/screen-05.jpg" data-hot><img src="assets/hmi/screen-05.jpg" alt="音乐界面"></div>
+        <div class="body">
+          <div class="n">Screen 02</div><h4>音乐</h4><div class="en">Music</div>
+          <p>将播放功能与沙漠光影场景结合，弱化传统列表式界面，突出专辑封面、播放进度与核心控制；雾化背景、柔和光晕与留白营造沉浸、情绪化的车内听觉体验。</p>
+          <div class="chips"><span>沉浸背景</span><span>专辑封面</span><span>柔和光晕</span><span>情绪化</span></div>
+        </div>
+      </div>
+      <div class="zone reveal">
+        <div class="pic" data-src="assets/hmi/screen-06.jpg" data-hot><img src="assets/hmi/screen-06.jpg" alt="空调界面"></div>
+        <div class="body">
+          <div class="n">Screen 03</div><h4>空调</h4><div class="en">Air Conditioner</div>
+          <p>将气流以可视化方式呈现，座椅、风向、温度与风量控制围绕中心区域展开；半透明面板与柔和蓝色气流效果使操作更直观，让舒适系统更具空间感与科技感。</p>
+          <div class="chips"><span>气流可视化</span><span>半透明面板</span><span>蓝色气流</span><span>直观操作</span></div>
+        </div>
+      </div>
+      <div class="zone reveal">
+        <div class="pic" data-src="assets/hmi/screen-07.jpg" data-hot><img src="assets/hmi/screen-07.jpg" alt="座椅调节"></div>
+        <div class="body">
+          <div class="n">Screen 04</div><h4>座椅调节</h4><div class="en">Seat Adjustment</div>
+          <p>以双座椅模型作为视觉中心，周围分布座椅姿态、按摩、通风加热与记忆功能；真实座椅形态与图形化控制结合，降低操作理解成本，强化 MPV 场景的舒适与尊享体验。</p>
+          <div class="chips"><span>双座椅模型</span><span>按摩通风</span><span>记忆功能</span><span>尊享体验</span></div>
+        </div>
+      </div>
+      <div class="zone reveal">
+        <div class="pic" data-src="assets/hmi/screen-09.jpg" data-hot><img src="assets/hmi/screen-09.jpg" alt="设置界面"></div>
+        <div class="body">
+          <div class="n">Screen 05</div><h4>设置</h4><div class="en">Settings</div>
+          <p>采用分栏式信息结构，左侧功能导航、右侧具体设置内容；延续玻璃拟态、低饱和蓝灰与暖金光影风格，在清晰易用的同时与整套 HMI 视觉语言保持统一。</p>
+          <div class="chips"><span>分栏结构</span><span>玻璃拟态</span><span>低饱和蓝灰</span><span>统一语言</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主题配色 -->
+    <div class="sub-head reveal">
+      <div class="l">Theme <span class="star">✳</span> Variants</div>
+      <div class="r">四套主题氛围</div>
+    </div>
+    <div class="topic reveal">
+      <div class="topic-bg"><img src="assets/hmi/screen-08.jpg" alt="主题配色"></div>
+      <div class="glass tilt">
+        <div class="tag">主题配色 · Themes</div>
+        <h3>一套语言 · 四时之境</h3>
+        <p>同一套 HMI 视觉语言衍生四种主题氛围，随心境与场景切换。</p>
+        <div class="chips theme-chips"><span>雪域松韵</span><span>苏韵青瓷</span><span>丝路沉香</span><span>漫野木语</span></div>
       </div>
     </div>
   </div>

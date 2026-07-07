@@ -83,9 +83,15 @@
   /* ---------- 翻页书 ---------- */
   var book = document.getElementById('book');
   if (book) {
-    var TOTAL = 12, leaves = [], cur = 0;
+    var ALBUM = window.__ALBUM__ || (function () {
+      var a = [], p, c;
+      for (c = 1; c <= 12; c++) { p = c < 10 ? '0' + c : c; a.push('assets/cmf/slide-' + p + '.jpg'); }
+      for (c = 1; c <= 9; c++) { p = c < 10 ? '0' + c : c; a.push('assets/hmi/screen-' + p + '.jpg'); }
+      return a;
+    })();
+    var TOTAL = ALBUM.length, leaves = [], cur = 0;
     for (var i = 1; i <= TOTAL; i++) {
-      var src = (window.__SLIDES__ && window.__SLIDES__[i - 1]) || ('assets/cmf/slide-' + (i < 10 ? '0' + i : i) + '.jpg');
+      var src = ALBUM[i - 1];
       var leaf = document.createElement('div');
       leaf.className = 'leaf';
       leaf.innerHTML =
