@@ -5,11 +5,11 @@ js=open('assets/js/main.js',encoding='utf-8').read()
 
 def datauri(path):
     b=open(path,'rb').read(); ext=path.rsplit('.',1)[1].lower()
-    mime='image/jpeg' if ext in('jpg','jpeg') else 'image/png'
+    mime={'jpg':'image/jpeg','jpeg':'image/jpeg','png':'image/png','gif':'image/gif','mp4':'video/mp4'}.get(ext,'application/octet-stream')
     return 'data:%s;base64,%s'%(mime,base64.b64encode(b).decode())
 
-# every asset image referenced directly in html
-img_paths=set(re.findall(r'assets/(?:img|cmf|hmi)/[A-Za-z0-9_\-]+\.jpg', html))
+# every asset image/video referenced directly in html
+img_paths=set(re.findall(r'assets/(?:img|cmf|hmi|video)/[A-Za-z0-9_\-]+\.(?:jpg|mp4)', html))
 # album = CMF 12 + HMI 9 (order matters for flipbook)
 album=['assets/cmf/slide-%02d.jpg'%i for i in range(1,13)]+['assets/hmi/screen-%02d.jpg'%i for i in range(1,10)]
 for p in album: img_paths.add(p)
