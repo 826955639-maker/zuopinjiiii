@@ -92,7 +92,7 @@
         '<div class="face front"><img src="' + src + '" alt="图册第' + i + '页"></div>' +
         '<div class="face back"><span class="bk">' + (i < 10 ? '0' + i : i) + '</span></div>' +
         '<div class="shade"></div>';
-      leaf.dataset.src = src; leaf.dataset.i = i;
+      leaf.dataset.i = i;
       book.appendChild(leaf); leaves.push(leaf);
     }
     var curEl = document.getElementById('flipCur'), totEl = document.getElementById('flipTot');
@@ -120,27 +120,35 @@
     nextBtn.addEventListener('click', next);
     prevBtn.addEventListener('click', prev);
 
-    /* 点击左右半页 / 拖动翻页 */
+    /* 点击右半页 → 下一页；点击左半页 → 上一页；亦可拖动翻页 */
     var stage = document.getElementById('bookStage');
-    var downX = null, downY = null, downT = 0, moved = false;
+    var downX = null, moved = false, dragged = false;
+    function turnAt(clientX) {
+      var r = stage.getBoundingClientRect();
+      (clientX - r.left) > r.width / 2 ? next() : prev();
+    }
     stage.addEventListener('pointerdown', function (e) {
-      downX = e.clientX; downY = e.clientY; downT = Date.now(); moved = false;
+      downX = e.clientX; moved = false; dragged = false;
     });
     stage.addEventListener('pointermove', function (e) {
       if (downX !== null && Math.abs(e.clientX - downX) > 8) moved = true;
     });
     stage.addEventListener('pointerup', function (e) {
       if (downX === null) return;
-      var dx = e.clientX - downX, dt = Date.now() - downT;
-      if (moved && Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
-      else if (!moved && dt < 300) {
-        var r = stage.getBoundingClientRect();
-        (e.clientX - r.left) > r.width / 2 ? next() : prev();
-      }
-      downX = downY = null;
+      var dx = e.clientX - downX;
+      if (moved && Math.abs(dx) > 40) { dx < 0 ? next() : prev(); dragged = true; }
+      downX = null;
     });
-    /* 双击放大当前页 */
-    stage.addEventListener('dblclick', function () { openLB(leaves[cur].dataset.src, '图册第 ' + (cur + 1) + ' 页'); });
+    /* 纯点击（无明显拖动）按左右半页翻页；拖动已处理则跳过 */
+    stage.addEventListener('click', function (e) {
+      if (dragged) { dragged = false; return; }
+      turnAt(e.clientX);
+    });
+    stage.style.cursor = 'pointer';
+    stage.addEventListener('mousemove', function (e) {
+      var r = stage.getBoundingClientRect();
+      stage.title = (e.clientX - r.left) > r.width / 2 ? '下一页 →' : '← 上一页';
+    });
 
     /* 键盘 */
     addEventListener('keydown', function (e) {
