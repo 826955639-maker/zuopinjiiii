@@ -3,17 +3,21 @@
   'use strict';
   var fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
-  /* ---------- 自定义光标 ---------- */
+  /* ---------- 自定义光标 + 跟随光晕 ---------- */
   if (fine) {
     var dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
-    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    var glow = document.createElement('div'); glow.className = 'cursor-glow'; document.body.appendChild(glow);
+    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my, gx = mx, gy = my, started = false;
     addEventListener('mousemove', function (e) {
       mx = e.clientX; my = e.clientY;
       dot.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
+      if (!started) { started = true; glow.style.opacity = 1; }
     });
     (function loop() {
       rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      gx += (mx - gx) * 0.08; gy += (my - gy) * 0.08;
       ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
+      glow.style.transform = 'translate(' + gx + 'px,' + gy + 'px) translate(-50%,-50%)';
       requestAnimationFrame(loop);
     })();
     var hotSel = '[data-hot],a,button,.idx-row,.zone .pic,.glass.tilt';
@@ -22,6 +26,25 @@
     });
     document.addEventListener('mouseout', function (e) {
       if (e.target.closest(hotSel)) ring.classList.remove('hot');
+    });
+
+    /* 磁吸：导航链接 / 翻页按钮 / 滚动提示 轻微吸附光标 */
+    document.querySelectorAll('.nav-links a, .flip-ctrl button, .scroll-cue').forEach(function (el) {
+      el.classList.add('magnetic');
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var x = e.clientX - (r.left + r.width / 2), y = e.clientY - (r.top + r.height / 2);
+        el.style.transform = 'translate(' + (x * 0.32).toFixed(1) + 'px,' + (y * 0.45).toFixed(1) + 'px)';
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+    });
+
+    /* 点击涟漪 */
+    addEventListener('pointerdown', function (e) {
+      var r = document.createElement('span'); r.className = 'ripple';
+      r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px';
+      document.body.appendChild(r);
+      setTimeout(function () { r.remove(); }, 640);
     });
   }
 
