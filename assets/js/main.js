@@ -105,11 +105,13 @@
     var prevBtn = document.getElementById('flipPrev'), nextBtn = document.getElementById('flipNext');
     totEl.textContent = TOTAL;
 
+    var WIN = 3; // 仅让当前页附近的书页参与合成，避免 21 层大图同时渲染造成卡顿
     function render() {
       leaves.forEach(function (lf, idx) {
         var turned = idx < cur;
         lf.classList.toggle('turned', turned);
         lf.style.zIndex = turned ? idx : (TOTAL - idx);
+        lf.style.display = (idx >= cur - WIN && idx <= cur + WIN) ? '' : 'none';
       });
       curEl.textContent = (cur + 1 < 10 ? '0' : '') + (cur + 1);
       prevBtn.disabled = cur === 0; nextBtn.disabled = cur === TOTAL - 1;
