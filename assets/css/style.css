@@ -324,8 +324,10 @@ footer{background:var(--bg-3);padding:96px 0 44px;border-top:1px solid var(--lin
 .q-text b{color:var(--red);font-weight:700}
 .overview{position:relative;border-radius:18px;overflow:hidden;min-height:430px;display:flex;align-items:center;justify-content:flex-end;padding:46px;box-shadow:0 40px 90px -50px #000}
 .overview-bg{position:absolute;inset:0;z-index:0}
-.overview-bg img{width:100%;height:100%;object-fit:cover}
-.overview-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(270deg,rgba(16,17,20,.55),transparent 58%)}
+.overview-bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%}
+.overview-bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(270deg,rgba(16,17,20,.72),rgba(16,17,20,.2) 52%,rgba(16,17,20,.35) 100%),
+    linear-gradient(0deg,rgba(16,17,20,.5),transparent 40%)}
 .overview-card{position:relative;z-index:2;max-width:520px;padding:38px 40px}
 .overview-card .tag{font-family:var(--display);font-style:italic;color:var(--gold);font-size:15px;margin-bottom:14px}
 .overview-card p{color:rgba(233,227,212,.92);font-size:15px;line-height:2.05;font-weight:300}
